@@ -30,11 +30,13 @@ int main(void)
   SceneManager sceneManager( driver, device->getSceneManager() );
   sceneManager.LoadScene();
 
+  int lastFPS = -1;// FPS
+
   //Rendering loop
   while (device->run())
   {
     // Close window if the Escape key is pressed
-    if(eventReceiver.IsKeyDown( irr::KEY_ESCAPE))
+    if(eventReceiver.IsKeyDown( irr::KEY_ESCAPE ))
     {
       device->closeDevice();
     }
@@ -46,6 +48,19 @@ int main(void)
     driver->beginScene( true, true, color );
     sceneManager.drawAll();
     driver->endScene ();
+
+    // FPS
+    int fps = driver->getFPS();
+    if( lastFPS != fps )
+      {
+      irr::core::stringw str = L"Boom - Irrlicht Engine [";
+      str += driver->getName();
+      str += "] FPS:";
+      str += fps;
+
+      device->setWindowCaption(str.c_str());
+      lastFPS = fps;
+      }
   }
   device->drop (); //Free memory
 
