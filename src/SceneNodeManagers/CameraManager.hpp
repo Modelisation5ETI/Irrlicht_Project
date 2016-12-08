@@ -6,7 +6,7 @@
 #include <irrlicht.h>
 #include "PathFinder.hpp"
 #include "EventReceiver.hpp"
-#include "CharacterManager.hpp"
+#include "PlayerManager.hpp"
 #include <iostream>
 
 class CameraManager
@@ -20,7 +20,7 @@ class CameraManager
     {}
 
     //Add 3er person camera
-    void add3rdPersonCameraToScene( irr::scene::ISceneManager* sceneManager );
+    void add3rdPersonCameraToScene( irr::scene::ISceneManager* sceneManager, irr::s32 id );
 
     //Add FPS camera
     void addFPSCameraToScene( irr::scene::ISceneManager* sceneManager );
@@ -36,7 +36,7 @@ class CameraManager
 
     // Update camera according to the 3rd person character
     void Update( irr::IrrlichtDevice* device,
-      EventReceiver* eventReceiver, CharacterManager characterManager );
+      EventReceiver* eventReceiver, PlayerManager playerManager );
 
     //Set camera orientation to mesh orientation
     void replaceCameraToMesh( float y_MeshRotation );

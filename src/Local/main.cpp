@@ -1,8 +1,8 @@
 #include <irrlicht.h>
 
 #include "Project_Config.h"
-#include "../include/EventReceiver.hpp"
-#include "../include/SceneManager.hpp"
+#include "EventReceiver.hpp"
+#include "SceneManager.hpp"
 
 int main(void)
 {
@@ -28,7 +28,7 @@ int main(void)
 
   // Scene Manager
   SceneManager sceneManager( driver, device->getSceneManager() );
-  sceneManager.LoadScene();
+  sceneManager.LoadScene( device );
 
   int lastFPS = -1;// FPS
 

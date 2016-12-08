@@ -6,9 +6,24 @@
 #include <irrlicht.h>
 #include "PathFinder.hpp"
 
+#include "PlayerManager.hpp"
+
 #include "TerrainManager.hpp"
-#include "CharacterManager.hpp"
 #include "CameraManager.hpp"
+#include "BoxManager.hpp"
+#include "TreeManager.hpp"
+#include "BulletManager.hpp"
+
+#include "CTreeSceneNode.h"
+
+#include <vector>
+
+// Number of  objects
+const unsigned int NB_BOXES = 3;
+const unsigned int NB_TREES = 1;
+// Node IDs
+enum NodeID { PLAYER, TERRAIN, CAMERA, BOX, TREE = BOX + NB_BOXES, BULLET = TREE + NB_TREES };
+
 
 class SceneManager
 {
@@ -20,7 +35,7 @@ class SceneManager
     {}
 
   // Load scene
-  void LoadScene();
+  void LoadScene( irr::IrrlichtDevice* device );
 
   // Update scene
   void UpdateScene( irr::IrrlichtDevice* device,
@@ -32,9 +47,12 @@ class SceneManager
 
   private:
     // Scene nodes
+    PlayerManager playerManager;
     TerrainManager terrainManager;
-    CharacterManager characterManager;
     CameraManager cameraManager;
+    BoxManager boxManager;
+    TreeManager treeManager;
+    BulletManager bulletManager;
 
     // Irrlicht Video Driver
     irr::video::IVideoDriver* videoDriver;

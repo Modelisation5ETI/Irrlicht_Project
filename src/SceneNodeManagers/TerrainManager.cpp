@@ -1,16 +1,21 @@
 #include "TerrainManager.hpp"
-
+#include <iostream>
 //*****************************************************************************
 // Add ITerrainSceneNode to scene manager
 //*****************************************************************************
-void TerrainManager::addTerrainToScene( irr::scene::ISceneManager* sceneManager, irr::video::IVideoDriver* driver )
+void TerrainManager::AddNodeToScene( irr::IrrlichtDevice* device,
+  irr::s32 id, irr::core::vector3df position )
 {
+  // Get information from device
+  irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+  irr::video::IVideoDriver* driver = device->getVideoDriver();
+
   //Create node
-  terrainNode = sceneManager->addTerrainSceneNode(
+  node = sceneManager->addTerrainSceneNode(
     PathFinder::GetFullMediaPath( "terrain-heightmap.bmp" ),//HeightMap
     0,					                                   //Parent node
-    -1,					                                   //Node id
-    irr::core::vector3df( 0.f, 0.f, 0.f ),		           //Position
+    id,					                                   //Node id
+    position,		                                       //Position
     irr::core::vector3df( 0.f, 0.f, 0.f ),		           //Rotation
     irr::core::vector3df( 40.f, 2.0f, 40.f ),	           //Scale
     irr::video::SColor( 255, 255, 255, 255 ),              //VertexColor
@@ -18,32 +23,38 @@ void TerrainManager::addTerrainToScene( irr::scene::ISceneManager* sceneManager,
     irr::scene::ETPS_17,	    		                   //PatchSize
     4 );				                                   //SmoothFactor
 
+  node->setName("Terrain");
+
   //Set Material
-  terrainNode->setMaterialFlag( irr::video::EMF_LIGHTING, false );
-  terrainNode->setMaterialTexture( 0,
+  node->setMaterialFlag( irr::video::EMF_LIGHTING, false );
+  node->setMaterialTexture( 0,
     driver->getTexture( PathFinder::GetFullMediaPath( "terrain-texture.jpg" ) ) );
-  terrainNode->setMaterialTexture(1,
+  node->setMaterialTexture(1,
     driver->getTexture( PathFinder::GetFullMediaPath( "detailmap3.jpg" ) ) );
-  terrainNode->setMaterialType( irr::video::EMT_DETAIL_MAP );
-  terrainNode->scaleTexture( 1.0f, 20.0f );
+  node->setMaterialType( irr::video::EMT_DETAIL_MAP );
+  node->scaleTexture( 1.0f, 20.0f );
 
   //Set triangle selector for collisions
   irr::scene::ITriangleSelector* selector =
-    sceneManager->createTerrainTriangleSelector( terrainNode, 0 );
-  terrainNode->setTriangleSelector( selector );
+    sceneManager->createTerrainTriangleSelector( node, 0 );
+  node->setTriangleSelector( selector );
   selector->drop();
 
 //  // DEBUG
-//  terrainNode->setMaterialFlag( irr::video::EMF_WIREFRAME,
-//    !terrainNode->getMaterial(0).Wireframe );
-//  terrainNode->setMaterialFlag( irr::video::EMF_POINTCLOUD, false );
+//  node->setMaterialFlag( irr::video::EMF_WIREFRAME,
+//    !node->getMaterial(0).Wireframe );
+//  node->setMaterialFlag( irr::video::EMF_POINTCLOUD, false );
 }
 
 //*****************************************************************************
 // Add Sky Dome
 //*****************************************************************************
-void addSkyDome( irr::scene::ISceneManager* sceneManager, irr::video::IVideoDriver* driver )
+void TerrainManager::addSkyDome( irr::IrrlichtDevice* device )
 {
+  // Get information from device
+  irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+  irr::video::IVideoDriver* driver = device->getVideoDriver();
+
   // Create skydome
   driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);
   sceneManager->addSkyDomeSceneNode(
@@ -54,8 +65,13 @@ void addSkyDome( irr::scene::ISceneManager* sceneManager, irr::video::IVideoDriv
 //*****************************************************************************
 // Add Sky Box
 //*****************************************************************************
-void TerrainManager::addSkyBox( irr::scene::ISceneManager* sceneManager, irr::video::IVideoDriver* driver )
+void TerrainManager::addSkyBox( irr::IrrlichtDevice* device )
 {
+  // Get information from device
+    irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+    irr::video::IVideoDriver* driver = device->getVideoDriver();
+
+  // Create skybox
   driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS, false);
 
   sceneManager->addSkyBoxSceneNode(

@@ -3,13 +3,12 @@
 //*****************************************************************************
 // Add 3er person camera
 //*****************************************************************************
-void CameraManager::add3rdPersonCameraToScene( irr::scene::ISceneManager* sceneManager )
+void CameraManager::add3rdPersonCameraToScene( irr::scene::ISceneManager* sceneManager, irr::s32 id )
 {
-  //WARNING : Call move3rdPersonCameraControl() in the main loop to trigger.
   cameraNode = sceneManager->addCameraSceneNode( 0, //Parent Node
     irr::core::vector3df( 0.0f, 0.0f, 0.0f ),       //CamDOWNera position
     irr::core::vector3df( 0.0f, 0.0f, 0.0f ),       //Camera orientation
-    0,                                              //Camera Id
+    id,                                         //Camera Id
     true );                                         //Set Active
   cameraNode->setFarValue( FarValue );
 
@@ -79,7 +78,7 @@ void CameraManager::addSceneNodeCollision( irr::scene::ISceneManager* sceneManag
 // Update camera according to the 3rd person character
 //*****************************************************************************
 void CameraManager::Update( irr::IrrlichtDevice* device,
-  EventReceiver* eventReceiver, CharacterManager characterManager )
+  EventReceiver* eventReceiver, PlayerManager playerManager )
 {
   //Get cursor mouvement
   irr::core::position2d<irr::f32> cursorPos =
@@ -100,24 +99,25 @@ void CameraManager::Update( irr::IrrlichtDevice* device,
   device->getCursorControl()->setPosition( 0.5f, 0.5f );
 
   //Set Camera orientation to the 3rd person orientation
-  if( checkOrientation( device, eventReceiver->IsArrowDown(), dx, dy, characterManager.y_MeshRotation ) )
+  if( checkOrientation( device, eventReceiver->IsArrowDown(), dx, dy, playerManager.Get_Y_Rotation() ) )
     {
-    replaceCameraToMesh( characterManager.y_MeshRotation );
+    replaceCameraToMesh( playerManager.Get_Y_Rotation() );
     }
 
   //3rd person position
-  irr::core::vector3df characterNodePosition = characterManager.characterNode->getPosition();
+  irr::scene::IAnimatedMeshSceneNode* playerNode = playerManager.GetNode();
+  irr::core::vector3df playerPosition = playerNode->getPosition();
   //Camera Zoom
   float Zoom = 70.0f;
 
   //Camera Position and Orientation
-  irr::core::vector3df cameraPos = characterNodePosition + irr::core::vector3df( Zoom, Zoom, 0 );
-  cameraPos.rotateXYBy( x_Rotation, characterNodePosition );
-  cameraPos.rotateXZBy( -y_Rotation, characterNodePosition );
+  irr::core::vector3df cameraPos = playerPosition + irr::core::vector3df( Zoom, Zoom, 0 );
+  cameraPos.rotateXYBy( x_Rotation, playerPosition );
+  cameraPos.rotateXZBy( -y_Rotation, playerPosition );
 
   //Update
   cameraNode->setPosition( cameraPos );
-  cameraNode->setTarget( characterNodePosition );
+  cameraNode->setTarget( playerPosition );
 }
 
 //*****************************************************************************
