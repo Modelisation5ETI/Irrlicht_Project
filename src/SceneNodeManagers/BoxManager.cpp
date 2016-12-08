@@ -39,7 +39,7 @@ void BoxManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
 
   //Save Data
   NodeGroupManager::nodes.push_back( box );
-  boxNodesHealth.push_back( 100 );
+  nodesHP.push_back( 100 );
 }
 
 //*****************************************************************************
@@ -69,9 +69,9 @@ void BoxManager::TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float dam
     if( NodeGroupManager::nodes[i]->getID() == id )
       {
       //Take damage
-      boxNodesHealth[i] -= damage;
+      nodesHP[i] -= damage;
       //Check for node life
-      if( boxNodesHealth[i] <= 0 )
+      if( nodesHP[i] <= 0 )
         {
         //Set Flag to update collision setup in SceneManager
         requestUpdate = true;
@@ -80,7 +80,7 @@ void BoxManager::TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float dam
         device->getSceneManager()->addToDeletionQueue(NodeGroupManager::nodes[i]);
         NodeGroupManager::nodes[i]->removeAnimators();
         NodeGroupManager::nodes.erase(NodeGroupManager::nodes.begin()+i);
-        boxNodesHealth.erase(boxNodesHealth.begin()+i);
+        nodesHP.erase(nodesHP.begin()+i);
         }
       }
     }
