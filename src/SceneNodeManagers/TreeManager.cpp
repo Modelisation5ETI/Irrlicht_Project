@@ -116,7 +116,7 @@ void TreeManager::AddNodeToScene( irr::IrrlichtDevice* device,
 
   //Store Data
   NodeGroupManager::nodes.push_back( tree );
-  treeNodesHealth.push_back( 100 );
+  nodesHP.push_back( 100 );
 }
 
 //*****************************************************************************
@@ -124,20 +124,24 @@ void TreeManager::AddNodeToScene( irr::IrrlichtDevice* device,
 //*****************************************************************************
 void TreeManager::TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float damage )
 {
-
+  //Find node
   for( unsigned int i = 0; i < NodeGroupManager::nodes.size(); i++ )
     {
     if( NodeGroupManager::nodes[i]->getID() == id )
       {
-      treeNodesHealth[i] -= damage;
-      if( treeNodesHealth[i] <= 0 )
+      //Take damage
+      nodesHP[i] -= damage;
+      //Check for node life
+      if( nodesHP[i] <= 0 )
         {
+        //Set Flag to update collision setup in SceneManager
         requestUpdate = true;
 
+        //Delete node
         device->getSceneManager()->addToDeletionQueue(NodeGroupManager::nodes[i]);
         NodeGroupManager::nodes[i]->removeAnimators();
         NodeGroupManager::nodes.erase(NodeGroupManager::nodes.begin()+i);
-        treeNodesHealth.erase(treeNodesHealth.begin()+i);
+        nodesHP.erase(nodesHP.begin()+i);
         }
       }
     }

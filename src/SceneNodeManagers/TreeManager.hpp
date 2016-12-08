@@ -44,13 +44,12 @@ class TreeManager : public NodeGroupManager<irr::scene::CTreeSceneNode>
 
     // Take Damage
     void TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float damage );
-
-
+    //Nodes' Health Points
+    std::vector<int> nodesHP;
+    //Request update if a node is deleted
     bool requestUpdate = false;
+
   private:
-    std::vector<int> treeNodesHealth;
-
-
     //Tree design files
     const STreeDesignFiles treeDesignFiles[NUM_TREE_DESIGNS] = {
       { "./trees/Oak.xml", "./textures/OakBark.png", "./textures/OakLeaf.png", "./textures/OakBillboard.png" },
