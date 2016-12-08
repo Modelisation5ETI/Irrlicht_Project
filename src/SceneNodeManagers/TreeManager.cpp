@@ -49,9 +49,24 @@ void TreeManager::Load( irr::IrrlichtDevice* device )
 void TreeManager::AddNodeGroupToScene( irr::IrrlichtDevice* device, irr::s32 id,
   unsigned int nbNodes )
 {
+  //WARNING: Hard cast here because we know that terrain has id 1
+  irr::scene::ITerrainSceneNode* terrain =
+    (irr::scene::ITerrainSceneNode*)(device->getSceneManager()->getSceneNodeFromId(1));
+
+  if( !terrain )
+    return;
+
   for( unsigned int i = 0; i < nbNodes; i++ )
     {
-    TreeManager::AddNodeToScene( device, id + i, irr::core::vector3df( 1200, 180, 1200 ) );
+    //Generate pseudo-random position
+    float x =rand()%int(terrain->getBoundingBox().getExtent().X - 100) + 100;
+    float z =rand()%int(terrain->getBoundingBox().getExtent().Z - 100) + 100;
+    float y = terrain->getHeight( x, z ) - 30;
+
+    //Add Tree
+    TreeManager::AddNodeToScene( device, id + i, irr::core::vector3df( x, y, z ) );
+
+    //Change seed
     seed++;
     }
 }

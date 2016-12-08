@@ -37,7 +37,7 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   boxManager.SetupInterCollision( device,
     irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
 
-
+  //Set Bullet Manager information for shooting
   bulletManager.device = device;
   bulletManager.boxManager = &boxManager;
   bulletManager.treeManager = &treeManager;
@@ -49,6 +49,7 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
 //*****************************************************************************
 void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* eventReceiver )
 {
+  //Handle creation of bullets when shooting
   if( playerManager.requestShoot )
     {
     //Bullets Collision nodes
@@ -60,6 +61,7 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     playerManager.requestShoot = false;
     }
 
+  //Update collision system when a node is deleted
   if( boxManager.requestUpdate || treeManager.requestUpdate )
   {
       //Player Collision
@@ -91,9 +93,9 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
       //Reset flags
       boxManager.requestUpdate = false;
       treeManager.requestUpdate =false;
-
   }
 
+  //Update managers
   playerManager.Update( eventReceiver );
   cameraManager.Update( device, eventReceiver, playerManager );
   bulletManager.Update();
