@@ -20,11 +20,19 @@ void BulletManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
 {
   //Get information from device
   irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+  irr::video::IVideoDriver* driver = device->getVideoDriver();
 
-  // Add sphere
-  irr::scene::IMeshSceneNode* bullet = sceneManager->addSphereSceneNode( 1, 16, 0, id, position );
+  //Add bullet
+  irr::scene::IBillboardSceneNode* bullet = sceneManager->addBillboardSceneNode(
+    0, irr::core::dimension2df(15,15), position, id );
 
-  // Store datas
+  //Material
+  bullet->setMaterialTexture( 0, driver->getTexture( PathFinder::GetFullMediaPath("particlegreen.jpg") ) );
+  bullet->setMaterialType( irr::video::EMT_TRANSPARENT_ADD_COLOR );
+  bullet->setMaterialFlag( irr::video::EMF_LIGHTING, false );
+  bullet->setMaterialFlag( irr::video::EMF_ZWRITE_ENABLE, false );
+
+  //Store datas
   NodeGroupManager::nodes.push_back( bullet );
   time.push_back(0);
 }
@@ -47,7 +55,7 @@ void BulletManager::Shoot( irr::IrrlichtDevice* device,
   irr::scene::ISceneNode* bullet = NodeGroupManager::nodes[NodeGroupManager::nodes.size()-1];
 
   //Add Fly Animator
-  irr::core::vector3df endPoint = startPoint + 1500 * direction;
+  irr::core::vector3df endPoint = startPoint + 2500 * direction;
   irr::scene::ISceneNodeAnimator* flyAnimator =
     device->getSceneManager()->createFlyStraightAnimator( startPoint, endPoint, 650 );
   bullet->addAnimator( flyAnimator );
