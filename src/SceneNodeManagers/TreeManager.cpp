@@ -39,6 +39,10 @@ void TreeManager::Load( irr::IrrlichtDevice* device )
     irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL,
     0 );
 
+  //Load Score billboard texture
+  scoreBillboard = driver->getTexture(
+              PathFinder::GetFullMediaPath( "particlegreen.jpg" ) );
+
   // Indicates that material data have been loaded
   loaded = true;
 }
@@ -117,32 +121,4 @@ void TreeManager::AddNodeToScene( irr::IrrlichtDevice* device,
   //Store Data
   NodeGroupManager::nodes.push_back( tree );
   nodesHP.push_back( 100 );
-}
-
-//*****************************************************************************
-// Take Damage
-//*****************************************************************************
-void TreeManager::TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float damage )
-{
-  //Find node
-  for( unsigned int i = 0; i < NodeGroupManager::nodes.size(); i++ )
-    {
-    if( NodeGroupManager::nodes[i]->getID() == id )
-      {
-      //Take damage
-      nodesHP[i] -= damage;
-      //Check for node life
-      if( nodesHP[i] <= 0 )
-        {
-        //Set Flag to update collision setup in SceneManager
-        requestUpdate = true;
-
-        //Delete node
-        device->getSceneManager()->addToDeletionQueue(NodeGroupManager::nodes[i]);
-        NodeGroupManager::nodes[i]->removeAnimators();
-        NodeGroupManager::nodes.erase(NodeGroupManager::nodes.begin()+i);
-        nodesHP.erase(nodesHP.begin()+i);
-        }
-      }
-    }
 }

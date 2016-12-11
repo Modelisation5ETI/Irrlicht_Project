@@ -17,13 +17,6 @@ class BoxManager : public CollisionNodeGroupManager<NodeType>
     void AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
       irr::core::vector3df position  );
 
-    //Take Damage
-    void TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float damage );
-    //Nodes' Health Points
-    std::vector<int> nodesHP;
-    //Request update if a node is deleted
-    bool requestUpdate = false;
-
   private:
     // Collision Callback
     bool onCollision(const irr::scene::ISceneNodeAnimatorCollisionResponse& animator);

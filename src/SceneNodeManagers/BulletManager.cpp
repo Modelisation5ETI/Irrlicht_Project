@@ -27,7 +27,8 @@ void BulletManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
     0, irr::core::dimension2df(15,15), position, id );
 
   //Material
-  bullet->setMaterialTexture( 0, driver->getTexture( PathFinder::GetFullMediaPath("particlegreen.jpg") ) );
+  bullet->setMaterialTexture( 0, driver->getTexture(
+    PathFinder::GetFullMediaPath("particlegreen.jpg") ) );
   bullet->setMaterialType( irr::video::EMT_TRANSPARENT_ADD_COLOR );
   bullet->setMaterialFlag( irr::video::EMF_LIGHTING, false );
   bullet->setMaterialFlag( irr::video::EMF_ZWRITE_ENABLE, false );
@@ -79,6 +80,7 @@ void BulletManager::Shoot( irr::IrrlichtDevice* device,
   metaTriangleSelector->drop();
   animator->drop();
   flyAnimator->drop();
+
 }
 
 //*****************************************************************************

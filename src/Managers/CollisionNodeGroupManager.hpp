@@ -3,10 +3,10 @@
 #ifndef COLLISIONNODEGROUPMANAGER_HPP
 #define COLLISIONNODEGROUPMANAGER_HPP
 
-#include "NodeGroupManager.hpp"
+#include "ShootableNodeGroupManager.hpp"
 
 template <typename NodeType>
-class CollisionNodeGroupManager : public NodeGroupManager<NodeType>, public irr::scene::ICollisionCallback
+class CollisionNodeGroupManager : public ShootableNodeGroupManager<NodeType>, public irr::scene::ICollisionCallback
 {
   public:
   // Setup Collision with an ISceneNode

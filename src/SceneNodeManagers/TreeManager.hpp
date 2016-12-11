@@ -3,7 +3,7 @@
 #ifndef TREEMANAGER_HPP
 #define TREEMANAGER_HPP
 
-#include "NodeGroupManager.hpp"
+#include "ShootableNodeGroupManager.hpp"
 #include "CTreeSceneNode.h"
 
 // Tree design filenames
@@ -28,7 +28,7 @@ struct STreeDesign
 // Number of different designs
 const irr::s32 NUM_TREE_DESIGNS = 4;
 
-class TreeManager : public NodeGroupManager<irr::scene::CTreeSceneNode>
+class TreeManager : public ShootableNodeGroupManager<irr::scene::CTreeSceneNode>
 {
   public:
     // Load data
@@ -41,13 +41,6 @@ class TreeManager : public NodeGroupManager<irr::scene::CTreeSceneNode>
     // Add Tree
     void AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
       irr::core::vector3df position  );
-
-    // Take Damage
-    void TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float damage );
-    //Nodes' Health Points
-    std::vector<int> nodesHP;
-    //Request update if a node is deleted
-    bool requestUpdate = false;
 
   private:
     //Tree design files
@@ -72,7 +65,6 @@ class TreeManager : public NodeGroupManager<irr::scene::CTreeSceneNode>
     irr::core::vector3df lightDir;
     //Enable shadowing
     bool lightsEnabled = true;
-
 
     // Indicates that data have been loaded
     bool loaded = false;

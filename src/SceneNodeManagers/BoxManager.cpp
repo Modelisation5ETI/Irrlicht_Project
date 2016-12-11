@@ -50,6 +50,10 @@ void BoxManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
   //Collision
   box->setTriangleSelector( sceneManager->createTriangleSelectorFromBoundingBox( box ) );
 
+  //Load Score billboard texture
+  scoreBillboard = driver->getTexture(
+              PathFinder::GetFullMediaPath( "particlegreen.jpg" ) );
+
   //Save Data
   NodeGroupManager::nodes.push_back( box );
   nodesHP.push_back( 100 );
@@ -71,30 +75,4 @@ bool BoxManager::onCollision(const irr::scene::ISceneNodeAnimatorCollisionRespon
   return false;
 }
 
-//*****************************************************************************
-// Take Damage
-//*****************************************************************************
-void BoxManager::TakeDamage( irr::IrrlichtDevice* device, irr::s32 id, float damage )
-{
-  //Find node
-  for( unsigned int i = 0; i < NodeGroupManager::nodes.size(); i++ )
-    {
-    if( NodeGroupManager::nodes[i]->getID() == id )
-      {
-      //Take damage
-      nodesHP[i] -= damage;
-      //Check for node life
-      if( nodesHP[i] <= 0 )
-        {
-        //Set Flag to update collision setup in SceneManager
-        requestUpdate = true;
 
-        //Delete node
-        device->getSceneManager()->addToDeletionQueue(NodeGroupManager::nodes[i]);
-        NodeGroupManager::nodes[i]->removeAnimators();
-        NodeGroupManager::nodes.erase(NodeGroupManager::nodes.begin()+i);
-        nodesHP.erase(nodesHP.begin()+i);
-        }
-      }
-    }
-}

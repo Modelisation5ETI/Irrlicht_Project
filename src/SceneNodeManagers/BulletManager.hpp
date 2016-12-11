@@ -12,15 +12,15 @@
 class BulletManager : public CollisionNodeGroupManager<irr::scene::ISceneNode>
 {
 public:
-  // Add multiple Boxes
+  //Add multiple Boxes
   void AddNodeGroupToScene( irr::IrrlichtDevice* device, irr::s32 id,
     unsigned int nbNodes );
 
-  // Add Box
+  //Add Box
   void AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
     irr::core::vector3df position  );
 
-  // Shoot one bullet
+  //Shoot one bullet
   void Shoot( irr::IrrlichtDevice* device,
     irr::s32 id,
     std::vector<irr::scene::ISceneNode*> collidableNode,
