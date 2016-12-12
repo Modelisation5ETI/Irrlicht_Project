@@ -22,7 +22,6 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   //Add Trees
   treeManager.AddNodeGroupToScene( device, TREE, NB_TREES );
 
-
   //Player Collision
   std::vector<irr::scene::ISceneNode*> playerCollisionNodes( boxManager.nodes.begin(),boxManager.nodes.end());
   playerCollisionNodes.insert( playerCollisionNodes.end(), treeManager.nodes.begin(), treeManager.nodes.end());
@@ -41,6 +40,9 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   bulletManager.device = device;
   bulletManager.boxManager = &boxManager;
   bulletManager.treeManager = &treeManager;
+
+  //Load GUI font to display score
+  font = device->getGUIEnvironment()->getFont( PathFinder::GetFullMediaPath( "bigfont.png" ) );
 
 }
 
@@ -63,37 +65,36 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
 
   //Update collision system when a node is deleted
   if( boxManager.requestUpdate || treeManager.requestUpdate )
-  {
-      //Player Collision
-      playerManager.GetNode()->removeAnimators();
-      std::vector<irr::scene::ISceneNode*> playerCollisionNodes( boxManager.nodes.begin(),boxManager.nodes.end());
-      playerCollisionNodes.insert( playerCollisionNodes.end(), treeManager.nodes.begin(), treeManager.nodes.end());
-      playerManager.SetupCollision( device, terrainManager.GetNode(), irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0) );
-      playerManager.SetupCollision( device, playerCollisionNodes, irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
+    {
+    //Player Collision
+    playerManager.GetNode()->removeAnimators();
+    std::vector<irr::scene::ISceneNode*> playerCollisionNodes( boxManager.nodes.begin(),boxManager.nodes.end());
+    playerCollisionNodes.insert( playerCollisionNodes.end(), treeManager.nodes.begin(), treeManager.nodes.end());
+    playerManager.SetupCollision( device, terrainManager.GetNode(), irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0) );
+    playerManager.SetupCollision( device, playerCollisionNodes, irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
 
-      //Boxes Collision
-      for(unsigned int i =0; i<boxManager.nodes.size(); i++)
-        boxManager.nodes[i]->removeAnimators();
-      std::vector<irr::scene::ISceneNode*> boxCollisionNodes( treeManager.nodes.begin(), treeManager.nodes.end());
-      boxCollisionNodes.push_back( terrainManager.GetNode() );
-      boxManager.SetupCollision( device, boxCollisionNodes,
-        irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0));
-      boxManager.SetupInterCollision( device,
-        irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
+    //Boxes Collision
+    for(unsigned int i =0; i<boxManager.nodes.size(); i++)
+      boxManager.nodes[i]->removeAnimators();
+    std::vector<irr::scene::ISceneNode*> boxCollisionNodes( treeManager.nodes.begin(), treeManager.nodes.end());
+    boxCollisionNodes.push_back( terrainManager.GetNode() );
+    boxManager.SetupCollision( device, boxCollisionNodes,
+      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0));
+    boxManager.SetupInterCollision( device,
+      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
 
-      //Delete bullets
-      for(unsigned int i = 0; i < bulletManager.nodes.size(); i++)
-        {
-        device->getSceneManager()->addToDeletionQueue(bulletManager.nodes[i]);
-        bulletManager.nodes[i]->removeAnimators();
-        }
-      bulletManager.nodes.clear();
-      bulletManager.time.clear();
-
-      //Reset flags
-      boxManager.requestUpdate = false;
-      treeManager.requestUpdate =false;
-  }
+    //Delete bullets
+    for(unsigned int i = 0; i < bulletManager.nodes.size(); i++)
+      {
+      device->getSceneManager()->addToDeletionQueue(bulletManager.nodes[i]);
+      bulletManager.nodes[i]->removeAnimators();
+      }
+    bulletManager.nodes.clear();
+    bulletManager.time.clear();
+     //Reset flags
+    boxManager.requestUpdate = false;
+    treeManager.requestUpdate =false;
+    }
 
   //Update managers
   playerManager.Update( eventReceiver );
@@ -107,5 +108,13 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
 void SceneManager::drawAll()
 {
   sceneManager->drawAll();
+
+  //Draw score
+  int score = boxManager.scoreContribution + treeManager.scoreContribution;
+  irr::core::stringw text = "Score : ";
+  text += score;
+  font->draw( text.c_str(),
+      irr::core::rect<irr::s32>(10,10,400,50),
+      irr::video::SColor(255,255,255,0));
 }
 

@@ -33,7 +33,6 @@ void ShootableNodeGroupManager<NodeType>::TakeDamage( irr::IrrlichtDevice* devic
 template <typename NodeType>
 void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsigned int i )
 {
-
   //Get information from device
   irr::scene::ISceneManager* sceneManager = device->getSceneManager();
 
@@ -42,29 +41,31 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
   irr::core::vector3df position( node->getPosition() +
     irr::core::vector3df( 0, (node->getBoundingBox().getExtent().Y)/2.0f, 0 ) );
 
-  //Draw billbord points
-  irr::scene::IBillboardSceneNode* points = sceneManager->addBillboardSceneNode(
-    0, irr::core::dimension2df(15,15), position, -1 );
-
-  //Material
-  points->setMaterialTexture( 0, scoreBillboard );
-  points->setMaterialType( irr::video::EMT_TRANSPARENT_ADD_COLOR );
-  points->setMaterialFlag( irr::video::EMF_LIGHTING, false );
-  points->setMaterialFlag( irr::video::EMF_ZWRITE_ENABLE, false );
+  //Draw score using BillboardTextNode
+  irr::core::stringw text = irr::core::stringw( score );
+  irr::video::SColor colorTop( 255, 255, 255, 0 );//Yellow
+  irr::video::SColor colorBottom( 255, 255, 0, 0 );//Red
+  irr::gui::IGUIFont* font = device->getGUIEnvironment()->getFont(
+    PathFinder::GetFullMediaPath( "bigfont.png" ) );
+  irr::scene::IBillboardTextSceneNode* scoreBillboard =
+    sceneManager->addBillboardTextSceneNode(
+      font, text.c_str(), 0, irr::core::dimension2df(30,20), position, -1,
+      colorTop, colorBottom );
+  scoreContribution += score;
 
   //Fly Animator
   irr::scene::ISceneNodeAnimator* flyAnimator = sceneManager->createFlyStraightAnimator(
     position, position + irr::core::vector3df(0,60,0), 750 );
-  points->addAnimator( flyAnimator );
+  scoreBillboard->addAnimator( flyAnimator );
   flyAnimator->drop();
 
   //Delete Animator
   irr::scene::ISceneNodeAnimator* deleteAnimator = sceneManager->createDeleteAnimator( 1000 );
-  points->addAnimator( deleteAnimator );
+  scoreBillboard->addAnimator( deleteAnimator );
   deleteAnimator->drop();
 
   //Delete node
-  device->getSceneManager()->addToDeletionQueue( NodeGroupManager<NodeType>::nodes[i] );
+  sceneManager->addToDeletionQueue( NodeGroupManager<NodeType>::nodes[i] );
   NodeGroupManager<NodeType>::nodes[i]->removeAnimators();
   NodeGroupManager<NodeType>::nodes.erase( NodeGroupManager<NodeType>::nodes.begin() + i );
 

@@ -18,12 +18,15 @@ public:
   //Request update if a node is deleted
   bool requestUpdate = false;
 
+  //Total score contribution accumulated
+  int scoreContribution = 0;
+
 protected:
   //Nodes' Health Points
   std::vector<int> nodesHP;
 
-  //Score Billboard Texture
-  irr::video::ITexture* scoreBillboard = 0;
+  //Score contribution
+  int score = 100;
 
 };
 

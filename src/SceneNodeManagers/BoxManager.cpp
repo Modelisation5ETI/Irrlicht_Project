@@ -50,10 +50,6 @@ void BoxManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
   //Collision
   box->setTriangleSelector( sceneManager->createTriangleSelectorFromBoundingBox( box ) );
 
-  //Load Score billboard texture
-  scoreBillboard = driver->getTexture(
-              PathFinder::GetFullMediaPath( "particlegreen.jpg" ) );
-
   //Save Data
   NodeGroupManager::nodes.push_back( box );
   nodesHP.push_back( 100 );

@@ -60,5 +60,8 @@ class SceneManager
     // Irrlicht SceneManager
     irr::scene::ISceneManager* sceneManager;
 
+    // Score font
+    irr::gui::IGUIFont* font;
+
 };
 #endif // SCENEMANAGER_HPP

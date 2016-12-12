@@ -39,10 +39,6 @@ void TreeManager::Load( irr::IrrlichtDevice* device )
     irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL,
     0 );
 
-  //Load Score billboard texture
-  scoreBillboard = driver->getTexture(
-              PathFinder::GetFullMediaPath( "particlegreen.jpg" ) );
-
   // Indicates that material data have been loaded
   loaded = true;
 }
