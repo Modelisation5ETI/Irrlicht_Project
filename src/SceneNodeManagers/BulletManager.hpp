@@ -7,6 +7,7 @@
 
 #include "BoxManager.hpp"
 #include "TreeManager.hpp"
+#include "EnemyManager.hpp"
 
 
 class BulletManager : public CollisionNodeGroupManager<irr::scene::ISceneNode>
@@ -36,6 +37,7 @@ public:
   irr::IrrlichtDevice* device;
   BoxManager* boxManager;
   TreeManager* treeManager;
+  EnemyManager* enemyManager;
 
   //Lifetime
   std::vector<float> time;

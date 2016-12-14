@@ -22,6 +22,10 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   //Add Trees
   treeManager.AddNodeGroupToScene( device, TREE, NB_TREES );
 
+  //Add Enemies
+  enemyManager.AddNodeGroupToScene( device, ENEMY, NB_ENEMIES );
+
+
   //Player Collision
   std::vector<irr::scene::ISceneNode*> playerCollisionNodes( boxManager.nodes.begin(),boxManager.nodes.end());
   playerCollisionNodes.insert( playerCollisionNodes.end(), treeManager.nodes.begin(), treeManager.nodes.end());
@@ -36,10 +40,20 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   boxManager.SetupInterCollision( device,
     irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
 
+  //Enemies Collision
+  std::vector<irr::scene::ISceneNode*> enemyCollisionNodes( treeManager.nodes.begin(), treeManager.nodes.end());
+  enemyCollisionNodes.push_back( terrainManager.GetNode() );
+  enemyManager.SetupCollision( device, enemyCollisionNodes,
+    irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0));
+  enemyManager.SetupInterCollision( device,
+    irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
+
+
   //Set Bullet Manager information for shooting
   bulletManager.device = device;
   bulletManager.boxManager = &boxManager;
   bulletManager.treeManager = &treeManager;
+  bulletManager.enemyManager = &enemyManager;
 
   //Load GUI font to display score
   font = device->getGUIEnvironment()->getFont( PathFinder::GetFullMediaPath( "bigfont.png" ) );
@@ -57,6 +71,7 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     //Bullets Collision nodes
     std::vector<irr::scene::ISceneNode*> bulletCollisionNodes( treeManager.nodes.begin(), treeManager.nodes.end());
     bulletCollisionNodes.insert( bulletCollisionNodes.end(), boxManager.nodes.begin(), boxManager.nodes.end());
+    bulletCollisionNodes.insert( bulletCollisionNodes.end(), enemyManager.nodes.begin(), enemyManager.nodes.end());
 
     //Create bullet
     bulletManager.Shoot( device, BULLET, bulletCollisionNodes, playerManager.GetNode()->getPosition(), playerManager.forward );
@@ -64,7 +79,7 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     }
 
   //Update collision system when a node is deleted
-  if( boxManager.requestUpdate || treeManager.requestUpdate )
+  if( boxManager.requestUpdate || treeManager.requestUpdate || enemyManager.requestUpdate )
     {
     //Player Collision
     playerManager.GetNode()->removeAnimators();
@@ -83,6 +98,16 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     boxManager.SetupInterCollision( device,
       irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
 
+    //Enemies Collision
+    for(unsigned int i =0; i<enemyManager.nodes.size(); i++)
+      enemyManager.nodes[i]->removeAnimators();
+    std::vector<irr::scene::ISceneNode*> enemyCollisionNodes( treeManager.nodes.begin(), treeManager.nodes.end());
+    enemyCollisionNodes.push_back( terrainManager.GetNode() );
+    enemyManager.SetupCollision( device, enemyCollisionNodes,
+      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0));
+    enemyManager.SetupInterCollision( device,
+      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
+
     //Delete bullets
     for(unsigned int i = 0; i < bulletManager.nodes.size(); i++)
       {
@@ -91,15 +116,18 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
       }
     bulletManager.nodes.clear();
     bulletManager.time.clear();
-     //Reset flags
+
+    //Reset flags
     boxManager.requestUpdate = false;
-    treeManager.requestUpdate =false;
+    treeManager.requestUpdate = false;
+    enemyManager.requestUpdate = false;
     }
 
   //Update managers
   playerManager.Update( eventReceiver );
   cameraManager.Update( device, eventReceiver, playerManager );
   bulletManager.Update();
+  enemyManager.Update( device, playerManager );
 }
 
 //*****************************************************************************
@@ -110,7 +138,9 @@ void SceneManager::drawAll()
   sceneManager->drawAll();
 
   //Draw score
-  int score = boxManager.scoreContribution + treeManager.scoreContribution;
+  int score = boxManager.scoreContribution +
+    treeManager.scoreContribution +
+    enemyManager.scoreContribution;
   irr::core::stringw text = "Score : ";
   text += score;
   font->draw( text.c_str(),

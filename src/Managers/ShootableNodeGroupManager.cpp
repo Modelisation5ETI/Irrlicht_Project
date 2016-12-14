@@ -74,6 +74,6 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
 
 
 template class ShootableNodeGroupManager<irr::scene::IMeshSceneNode>;
-template class ShootableNodeGroupManager<irr::scene::IBillboardSceneNode>;
+template class ShootableNodeGroupManager<irr::scene::IAnimatedMeshSceneNode>;
 template class ShootableNodeGroupManager<irr::scene::ISceneNode>;
 template class ShootableNodeGroupManager<irr::scene::CTreeSceneNode>;

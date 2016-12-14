@@ -13,6 +13,7 @@
 #include "BoxManager.hpp"
 #include "TreeManager.hpp"
 #include "BulletManager.hpp"
+#include "EnemyManager.hpp"
 
 #include "CTreeSceneNode.h"
 
@@ -21,8 +22,9 @@
 // Number of  objects
 const unsigned int NB_BOXES = 15;
 const unsigned int NB_TREES = 15;
+const unsigned int NB_ENEMIES = 1;
 // Node IDs
-enum NodeID { PLAYER, TERRAIN, CAMERA, BOX, TREE = BOX + NB_BOXES, BULLET = TREE + NB_TREES };
+enum NodeID { PLAYER, TERRAIN, CAMERA, BOX, TREE = BOX + NB_BOXES, ENEMY = TREE + NB_TREES, BULLET = ENEMY + NB_ENEMIES };
 
 
 class SceneManager
@@ -53,6 +55,7 @@ class SceneManager
     BoxManager boxManager;
     TreeManager treeManager;
     BulletManager bulletManager;
+    EnemyManager enemyManager;
 
     // Irrlicht Video Driver
     irr::video::IVideoDriver* videoDriver;
