@@ -44,7 +44,7 @@ class TreeManager : public ShootableNodeGroupManager<irr::scene::CTreeSceneNode>
 
   private:
     //Tree design files
-    const STreeDesignFiles treeDesignFiles[NUM_TREE_DESIGNS] = {
+    STreeDesignFiles treeDesignFiles[NUM_TREE_DESIGNS] = {
       { "tree_XML/Oak.xml", "tree_textures/OakBark.png", "tree_textures/OakLeaf.png", "tree_textures/OakBillboard.png" },
       { "tree_XML/Aspen.xml", "tree_textures/AspenBark.png", "tree_textures/AspenLeaf.png", "tree_textures/AspenBillboard.png" },
       { "tree_XML/Pine.xml", "tree_textures/PineBark.png", "tree_textures/PineLeaf.png", "tree_textures/PineBillboard.png" },

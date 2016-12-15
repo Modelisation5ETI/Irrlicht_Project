@@ -17,11 +17,8 @@ void ShootableNodeGroupManager<NodeType>::TakeDamage( irr::IrrlichtDevice* devic
       //Check for node life
       if( nodesHP[i] <= 0 )
         {
-        //Set Flag to update collision setup in SceneManager
-        requestUpdate = true;
         //Die
         Die( device, i );
-        nodesHP.erase( nodesHP.begin() + i );
         }
       }
     }
@@ -68,6 +65,11 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
   sceneManager->addToDeletionQueue( NodeGroupManager<NodeType>::nodes[i] );
   NodeGroupManager<NodeType>::nodes[i]->removeAnimators();
   NodeGroupManager<NodeType>::nodes.erase( NodeGroupManager<NodeType>::nodes.begin() + i );
+
+  //Set Flag to update collision setup in SceneManager
+  requestUpdate = true;
+  //Clean HP vector
+  nodesHP.erase( nodesHP.begin() + i );
 
   return;
 }

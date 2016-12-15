@@ -65,6 +65,20 @@ void PlayerManager::Update( EventReceiver* eventReceiver )
 }
 
 //*****************************************************************************
+// Die : Behavior to adopt if HP < 0
+//*****************************************************************************
+void PlayerManager::Die( irr::IrrlichtDevice* device )
+{
+  //Die Animation
+  NodeManager::node->setLoopMode( false );
+  NodeManager::node->setMD2Animation(irr::scene::EMAT_DEATH_FALLBACK);
+
+  //GAME OVER
+  GameOver = true;
+}
+
+
+//*****************************************************************************
 // Update Transform
 //*****************************************************************************
 void PlayerManager::updateTransform( EventReceiver* eventReceiver )

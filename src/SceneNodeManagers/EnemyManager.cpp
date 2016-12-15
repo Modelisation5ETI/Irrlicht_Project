@@ -80,7 +80,7 @@ bool EnemyManager::onCollision(const irr::scene::ISceneNodeAnimatorCollisionResp
 //*****************************************************************************
 // Update
 //*****************************************************************************
-void EnemyManager::Update( irr::IrrlichtDevice* device, PlayerManager playerManager )
+void EnemyManager::Update( irr::IrrlichtDevice* device, PlayerManager* playerManager )
 {
   for( unsigned int i = 0; i < NodeGroupManager::nodes.size(); i++ )
     {
@@ -92,14 +92,13 @@ void EnemyManager::Update( irr::IrrlichtDevice* device, PlayerManager playerMana
     //Enemy Node
     irr::scene::IAnimatedMeshSceneNode* enemyNode = NodeGroupManager::nodes[i];
     //Direction to player
-    irr::core::vector3df direction = ( playerManager.GetNode()->getPosition() - enemyNode->getPosition() );
+    irr::core::vector3df direction = ( playerManager->GetNode()->getPosition() - enemyNode->getPosition() );
     float distToPlayerSQ = direction.getLengthSQ();
     direction.normalize();
 
     //Run toward player
     if( distToPlayerSQ < minRadius * minRadius )
       {
-      std::cout<<"LET ME KILL YOU"<<std::endl;
       enemyNode->setPosition( enemyNode->getPosition() + speed * direction );
       enemyNode->setMD2Animation( irr::scene::EMAT_RUN );
       animationType = irr::scene::EMAT_RUN;
@@ -116,8 +115,10 @@ void EnemyManager::Update( irr::IrrlichtDevice* device, PlayerManager playerMana
     //Kamikaze
     if( distToPlayerSQ <  0.25 * enemySize * enemySize )
       {
-      std::cout<<"BOOM! I DID IT"<<std::endl;
+      //Enemy explosion
       Die( device, i );
+      //Hurt player
+      playerManager->TakeDamage( device, 100 );
       }
 
     }

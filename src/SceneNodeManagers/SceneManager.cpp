@@ -5,9 +5,12 @@
 //*****************************************************************************
 void SceneManager::LoadScene( irr::IrrlichtDevice* device )
 {
+  //Get information from device
+  irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+
   //Add terrain
   terrainManager.AddNodeToScene( device, TERRAIN, irr::core::vector3df(0,0,0) );
-  terrainManager.addSkyBox( device);
+  terrainManager.addSkyBox( device );
 
   //Add character
   playerManager.AddNodeToScene( device, PLAYER, irr::core::vector3df( 1000, 570, 1000 ) );
@@ -55,7 +58,7 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   bulletManager.treeManager = &treeManager;
   bulletManager.enemyManager = &enemyManager;
 
-  //Load GUI font to display score
+  //Load GUI font to display text
   font = device->getGUIEnvironment()->getFont( PathFinder::GetFullMediaPath( "bigfont.png" ) );
 
 }
@@ -65,6 +68,25 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
 //*****************************************************************************
 void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* eventReceiver )
 {
+  //Handle GameOver
+  if( playerManager.GameOver )
+    {
+    //Stop updating unless restart is requested
+    while( !eventReceiver->IsKeyDown( irr::KEY_KEY_R ) )
+      return;
+    //Reload scene
+    device->getSceneManager()->clear();
+    playerManager = PlayerManager();//TODO: Implement Destructors for managers
+    terrainManager = TerrainManager();
+    cameraManager = CameraManager();
+    boxManager = BoxManager();
+    bulletManager = BulletManager();
+    enemyManager = EnemyManager();
+    treeManager = TreeManager();
+    LoadScene( device );
+    return;
+    }
+
   //Handle creation of bullets when shooting
   if( playerManager.requestShoot )
     {
@@ -127,14 +149,17 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
   playerManager.Update( eventReceiver );
   cameraManager.Update( device, eventReceiver, playerManager );
   bulletManager.Update();
-  enemyManager.Update( device, playerManager );
+  enemyManager.Update( device, &playerManager );
 }
 
 //*****************************************************************************
 // Draw All
 //*****************************************************************************
-void SceneManager::drawAll()
+void SceneManager::drawAll( irr::IrrlichtDevice* device )
 {
+  //Get information from device
+  irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+
   sceneManager->drawAll();
 
   //Draw score
@@ -144,7 +169,13 @@ void SceneManager::drawAll()
   irr::core::stringw text = "Score : ";
   text += score;
   font->draw( text.c_str(),
-      irr::core::rect<irr::s32>(10,10,400,50),
-      irr::video::SColor(255,255,255,0));
+      irr::core::rect<irr::s32>( 10, 10, 400, 50 ),
+      irr::video::SColor( 255, 255, 255, 0 ) );
+
+  //GameOver
+  if( playerManager.GameOver )
+    font->draw( L"Game Over ! Restart -> r",
+      irr::core::rect<irr::s32>( 150, 300, 400, 50 ),
+      irr::video::SColor( 255, 255, 255, 0 ) );
 }
 

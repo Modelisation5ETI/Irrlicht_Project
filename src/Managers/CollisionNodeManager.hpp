@@ -3,12 +3,12 @@
 #ifndef COLLISIONNODEMANAGER_HPP
 #define COLLISIONNODEMANAGER_HPP
 
-#include "NodeManager.hpp"
+#include "ShootableNodeManager.hpp"
 
 #include <vector>
 
 template <typename NodeType>
-class CollisionNodeManager : public NodeManager<NodeType>, irr::scene::ICollisionCallback
+class CollisionNodeManager : public ShootableNodeManager<NodeType>, irr::scene::ICollisionCallback
 {
   public:
   // Setup Collision with an ISceneNode

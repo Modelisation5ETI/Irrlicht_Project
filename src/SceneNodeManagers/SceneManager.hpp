@@ -31,9 +31,7 @@ class SceneManager
 {
   public:
     //! Constructor
-    SceneManager( irr::video::IVideoDriver* iVideoDriver,
-      irr::scene::ISceneManager* iSceneManager ) :
-      videoDriver(iVideoDriver), sceneManager(iSceneManager)
+    SceneManager()
     {}
 
   // Load scene
@@ -44,7 +42,7 @@ class SceneManager
                     EventReceiver* eventReceiver );
 
   // Draw All
-  void drawAll();
+  void drawAll( irr::IrrlichtDevice* device );
 
 
   private:
@@ -57,13 +55,7 @@ class SceneManager
     BulletManager bulletManager;
     EnemyManager enemyManager;
 
-    // Irrlicht Video Driver
-    irr::video::IVideoDriver* videoDriver;
-
-    // Irrlicht SceneManager
-    irr::scene::ISceneManager* sceneManager;
-
-    // Score font
+    // Text font
     irr::gui::IGUIFont* font;
 
 };

@@ -37,14 +37,19 @@ public:
   // Request Shooting
   bool requestShoot = false;
 
+  //Game Over
+  bool GameOver = false;
+
 private:
+  //Override Die()
+  virtual void Die( irr::IrrlichtDevice* device );
   //Update 3rd person position and orientation
   void updateTransform( EventReceiver* eventReceiver );
 
   //Update 3rd person animation
   void updateAnimation( EventReceiver* eventReceiver );
 
-  // Rotation around Y
+  //Rotation around Y
   float y_Rotation;
   // Animation
   irr::scene::EMD2_ANIMATION_TYPE animationType;

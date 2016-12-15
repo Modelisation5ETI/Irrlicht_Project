@@ -19,7 +19,7 @@ class EnemyManager : public CollisionNodeGroupManager<EnemyNodeType>
       irr::core::vector3df position  );
 
     //Update
-    void Update( irr::IrrlichtDevice* device, PlayerManager playerManager );
+    void Update( irr::IrrlichtDevice* device, PlayerManager* playerManager );
 
   private:
     // Collision Callback
