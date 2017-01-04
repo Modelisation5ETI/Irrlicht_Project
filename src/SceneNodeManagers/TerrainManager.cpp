@@ -12,7 +12,7 @@ void TerrainManager::AddNodeToScene( irr::IrrlichtDevice* device,
 
   //Create node
   node = sceneManager->addTerrainSceneNode(
-    PathFinder::GetFullMediaPath( "terrain-heightmap.bmp" ),//HeightMap
+    PathFinder::GetFullMediaPath( "terrain-heightmap_gauss.bmp" ),//HeightMap
     0,					                                   //Parent node
     id,					                                   //Node id
     position,		                                       //Position
