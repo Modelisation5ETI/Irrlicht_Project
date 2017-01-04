@@ -67,6 +67,13 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
   scoreBillboard->addAnimator( deleteAnimator );
   deleteAnimator->drop();
 
+  //Clear particles system
+  nodesPS[i]->clearParticles();
+  nodesPS[i]->removeAllAffectors();
+  nodesPS[i]->removeAll();
+  sceneManager->addToDeletionQueue(nodesPS[i]);
+  nodesPS.erase(nodesPS.begin()+i);
+
   //Delete node
   sceneManager->addToDeletionQueue( NodeGroupManager<NodeType>::nodes[i] );
   NodeGroupManager<NodeType>::nodes[i]->removeAnimators();
@@ -78,58 +85,49 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
 template <typename NodeType>
 void ShootableNodeGroupManager<NodeType>::DammageParticles( irr::IrrlichtDevice* device, unsigned int i )
 {
+    //Get information from device
+    irr::video::IVideoDriver* driver = device->getVideoDriver();
 
-  //Get information from device
-  irr::scene::ISceneManager* sceneManager = device->getSceneManager();
-  irr::video::IVideoDriver* driver = device->getVideoDriver();
-
-  irr::scene::IParticleSystemSceneNode* ps =
-      sceneManager->addParticleSystemSceneNode(false);
-
-  //Compute particles position
-  irr::scene::ISceneNode* node = NodeGroupManager<NodeType>::nodes[i];
-  irr::core::vector3df position( node->getPosition() +
-    irr::core::vector3df( 0, (node->getBoundingBox().getExtent().Y)/2.0f, 0 ) );
-
-  //Compute particles position
- // TO DO : en fonction des ID (box, tree, etc)
-  irr::scene::IParticleEmitter* em = ps->createBoxEmitter(
+    //Compute particles position
+    irr::scene::ISceneNode* node = NodeGroupManager<NodeType>::nodes[i];
+    irr::core::vector3df position( node->getPosition() +
+      irr::core::vector3df( 0, (node->getBoundingBox().getExtent().Y)/2.0f, 0 ) );
+    irr::scene::IParticleEmitter* em = nodesPS[i]->createBoxEmitter(
       irr::core::aabbox3d<irr::f32>(-3,0,-3,3,1,3), // emitter size
       irr::core::vector3df(0.0f,0.06f,0.0f),   // initial direction
       80,1000,                             // emit rate
       irr::video::SColor(0,255,255,255),       // darkest color
       irr::video::SColor(0,255,255,255),       // brightest color=
-      600,3000,0,                         // min and max age, angle //heigh
+      600,1200,100-nodesHP[i], // min and max age, angle //heigh
       irr::core::dimension2df(10.f,10.f),         // min size
       irr::core::dimension2df(20.f,20.f));        // max size
 
-  irr::scene::IParticleAffector* paf = ps->createFadeOutParticleAffector();
-  ps->addAffector(paf); // same goes for the affector
-  paf->drop();
+     irr::core::string<irr::c8> nodeName = node->getName();
+    if(nodeName == irr::core::string<irr::c8>("Tree"))
+    {
+      em->setMaxLifeTime(1000+(100-nodesHP[i])*15);
+    }
+    else if(nodeName == irr::core::string<irr::c8>("Box"))
+    {
+      em->setMaxLifeTime(800+(100-nodesHP[i]));
+    }
 
-        ps->setPosition(irr::core::vector3df(position));
-        ps->setScale(irr::core::vector3df(2,2,2));
-        ps->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-        ps->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
-        ps->setMaterialTexture(0, driver->getTexture(PathFinder::GetFullMediaPath("fire.bmp")));
-        ps->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-        ps->setEmitter(em); // this grabs the emitter
+    irr::scene::IParticleAffector* paf = nodesPS[i]->createFadeOutParticleAffector();
+    nodesPS[i]->addAffector(paf); // same goes for the affector
+    paf->drop();
 
-        em->setMaxAngleDegrees(100-nodesHP[i]);
-        em->drop(); // so we can drop it here without deleting it
+    nodesPS[i]->setPosition(irr::core::vector3df(position));
+    nodesPS[i]->setScale(irr::core::vector3df(2,2,2));
+    nodesPS[i]->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+    nodesPS[i]->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
+    nodesPS[i]->setMaterialTexture(0, driver->getTexture(PathFinder::GetFullMediaPath("fire.bmp")));
+    nodesPS[i]->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+    nodesPS[i]->setEmitter(em); // this grabs the emitter
 
-  if( nodesHP[i] < 60 )
-  {
-        //TO DO : delete particles when node kill
+    em->setMaxAngleDegrees(100-nodesHP[i]);
+    em->drop(); // so we can drop it here without deleting it
 
-//      //Delete Animator
-//      irr::scene::ISceneNodeAnimator* deleteAnimator = sceneManager->createDeleteAnimator( 100 );
-//      ps->addAnimator( deleteAnimator );
-//      deleteAnimator->drop();
 
-//      ps->clearParticles();
-//      ps->setEmitter(0);
-  }
   return;
 }
 

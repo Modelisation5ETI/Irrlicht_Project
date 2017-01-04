@@ -32,6 +32,10 @@ protected:
   //Score contribution
   int score = 100;
 
+  //Vector of particles
+  std::vector<irr::scene::IParticleSystemSceneNode*> nodesPS;
+
+
 };
 
 #endif // SHOOTABLENODEGROUP_HPP
