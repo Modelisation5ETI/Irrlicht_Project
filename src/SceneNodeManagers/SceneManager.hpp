@@ -13,6 +13,7 @@
 #include "BoxManager.hpp"
 #include "TreeManager.hpp"
 #include "BulletManager.hpp"
+#include "WaterTerrainManager.hpp"
 
 #include "CTreeSceneNode.h"
 
@@ -22,7 +23,7 @@
 const unsigned int NB_BOXES = 15;
 const unsigned int NB_TREES = 15;
 // Node IDs
-enum NodeID { PLAYER, TERRAIN, CAMERA, BOX, TREE = BOX + NB_BOXES, BULLET = TREE + NB_TREES };
+enum NodeID { PLAYER, TERRAIN, WATER, CAMERA, BOX, TREE = BOX + NB_BOXES, BULLET = TREE + NB_TREES };
 
 
 class SceneManager
@@ -53,6 +54,7 @@ class SceneManager
     BoxManager boxManager;
     TreeManager treeManager;
     BulletManager bulletManager;
+    WaterTerrainManager waterTerrainManager;
 
     // Irrlicht Video Driver
     irr::video::IVideoDriver* videoDriver;
@@ -63,5 +65,6 @@ class SceneManager
     // Score font
     irr::gui::IGUIFont* font;
 
+    irr::gui::IGUIFont* playerHP;
 };
 #endif // SCENEMANAGER_HPP

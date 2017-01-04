@@ -53,6 +53,12 @@ void BoxManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
   //Save Data
   NodeGroupManager::nodes.push_back( box );
   nodesHP.push_back( 100 );
+
+  //Add particles system and emitter
+  irr::scene::IParticleSystemSceneNode* ps =
+    sceneManager->addParticleSystemSceneNode(false);
+   nodesPS.push_back(ps);
+
 }
 
 //*****************************************************************************

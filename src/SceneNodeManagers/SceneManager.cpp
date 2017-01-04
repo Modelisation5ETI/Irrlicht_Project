@@ -9,8 +9,11 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   terrainManager.AddNodeToScene( device, TERRAIN, irr::core::vector3df(0,0,0) );
   terrainManager.addSkyBox( device);
 
+  //Add water terrain
+  waterTerrainManager.AddNodeToScene(device, WATER, irr::core::vector3df(4000,-6,4000) );
+
   //Add character
-  playerManager.AddNodeToScene( device, PLAYER, irr::core::vector3df( 1000, 570, 1000 ) );
+  playerManager.AddNodeToScene( device, PLAYER, irr::core::vector3df( 5768, 700, 4844 ) );
 
   //Add camera
   cameraManager.add3rdPersonCameraToScene( sceneManager, CAMERA );
@@ -114,7 +117,15 @@ void SceneManager::drawAll()
   irr::core::stringw text = "Score : ";
   text += score;
   font->draw( text.c_str(),
-      irr::core::rect<irr::s32>(10,10,400,50),
-      irr::video::SColor(255,255,255,0));
+    irr::core::rect<irr::s32>(10,10,400,50),
+    irr::video::SColor(255,255,255,0));
+
+  int HP = 100; //find playerHP
+  irr::core::stringw textHP = "%" ;
+  textHP += HP;
+  font-> draw (textHP.c_str(),
+    irr::core::rect<irr::s32>(10,70,400,50),
+    irr::video::SColor(255,255,0,0));
+
 }
 
