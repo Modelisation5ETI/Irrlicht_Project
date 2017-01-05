@@ -63,6 +63,7 @@ void TreeManager::AddNodeGroupToScene( irr::IrrlichtDevice* device, irr::s32 id,
     float z =rand()%int(terrain->getBoundingBox().getExtent().Z - 100) + 100;
     float y = terrain->getHeight( x, z ) - 30;
 
+
     //Add Tree
     TreeManager::AddNodeToScene( device, id + i, irr::core::vector3df( x, y, z ) );
 
@@ -117,4 +118,9 @@ void TreeManager::AddNodeToScene( irr::IrrlichtDevice* device,
   //Store Data
   NodeGroupManager::nodes.push_back( tree );
   nodesHP.push_back( 100 );
+
+  //Add particles system and emitter
+  irr::scene::IParticleSystemSceneNode* ps =
+    sceneManager->addParticleSystemSceneNode(false);
+   nodesPS.push_back(ps);
 }

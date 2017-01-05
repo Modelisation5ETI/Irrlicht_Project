@@ -105,7 +105,7 @@ bool BulletManager::onCollision(const irr::scene::ISceneNodeAnimatorCollisionRes
     treeManager->TakeDamage( device, collisionNode->getID(), 20 );
     }
 
-  // Collision with a tree
+  // Collision with an enemy
   if( nodeName == irr::core::string<irr::c8>("Enemy") )
     {
     std::cout<<"COLLISION BULLET - ENEMY"<<std::endl;

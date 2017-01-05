@@ -15,6 +15,10 @@ public:
   //Die : Behavior to adopt if HP < 0
   virtual void Die( irr::IrrlichtDevice* device, unsigned int i );
 
+  // Particles when dammage
+  virtual void DammageParticles( irr::IrrlichtDevice* device, unsigned int i );
+
+
   //Request update if a node is deleted
   bool requestUpdate = false;
 
@@ -27,6 +31,10 @@ protected:
 
   //Score contribution
   int score = 100;
+
+  //Vector of particles
+  std::vector<irr::scene::IParticleSystemSceneNode*> nodesPS;
+
 
 };
 

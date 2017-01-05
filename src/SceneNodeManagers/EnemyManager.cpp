@@ -40,6 +40,11 @@ void EnemyManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
       PathFinder::GetFullMediaPath( "Enemy/Droid.md2" ) );
     irr::scene::IAnimatedMeshSceneNode* node = sceneManager->addAnimatedMeshSceneNode( mesh, 0, id, position );
 
+    //Add particles system and emitter
+    irr::scene::IParticleSystemSceneNode* ps =
+      sceneManager->addParticleSystemSceneNode(false);
+     nodesPS.push_back(ps);
+  
     //Set Name
     node->setName("Enemy");
 
