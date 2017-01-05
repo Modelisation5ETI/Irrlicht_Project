@@ -44,7 +44,7 @@ void EnemyManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
     irr::scene::IParticleSystemSceneNode* ps =
       sceneManager->addParticleSystemSceneNode(false);
      nodesPS.push_back(ps);
-
+  
     //Set Name
     node->setName("Enemy");
 

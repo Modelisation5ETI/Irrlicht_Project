@@ -79,8 +79,8 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
   //Set Flag to update collision setup in SceneManager
   requestUpdate = true;
 
+  //Clean HP vector
   nodesHP.erase( nodesHP.begin() + i );
-
 
   return;
 }

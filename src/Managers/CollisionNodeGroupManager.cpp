@@ -114,4 +114,3 @@ void CollisionNodeGroupManager<NodeType>::SetupInterCollision( irr::IrrlichtDevi
 template class CollisionNodeGroupManager<irr::scene::IMeshSceneNode>;
 template class CollisionNodeGroupManager<irr::scene::IBillboardSceneNode>;
 template class CollisionNodeGroupManager<irr::scene::IAnimatedMeshSceneNode>;
-

@@ -5,8 +5,8 @@
 
 #include "CollisionNodeGroupManager.hpp"
 
-typedef typename irr::scene::IMeshSceneNode NodeType;
-class BoxManager : public CollisionNodeGroupManager<NodeType>
+typedef typename irr::scene::IMeshSceneNode BoxNodeType;
+class BoxManager : public CollisionNodeGroupManager<BoxNodeType>
 {
   public:
     //Add multiple Boxes
@@ -20,8 +20,6 @@ class BoxManager : public CollisionNodeGroupManager<NodeType>
   private:
     // Collision Callback
     bool onCollision(const irr::scene::ISceneNodeAnimatorCollisionResponse& animator);
-
-
 
 };
 

@@ -46,7 +46,7 @@ int main(void)
 
     // Draw scene
     driver->beginScene( true, true, color );
-    sceneManager.drawAll(device);
+    sceneManager.drawAll( device );
     driver->endScene ();
 
     // FPS

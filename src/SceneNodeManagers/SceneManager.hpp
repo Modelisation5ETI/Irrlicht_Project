@@ -14,6 +14,7 @@
 #include "TreeManager.hpp"
 #include "BulletManager.hpp"
 #include "WaterTerrainManager.hpp"
+
 #include "EnemyManager.hpp"
 
 #include "CTreeSceneNode.h"
@@ -26,7 +27,6 @@ const unsigned int NB_TREES = 15;
 const unsigned int NB_ENEMIES = 1;
 // Node IDs
 enum NodeID { PLAYER, TERRAIN, CAMERA, WATER, BOX, TREE = BOX + NB_BOXES, ENEMY = TREE + NB_TREES, BULLET = ENEMY + NB_ENEMIES };
-
 
 class SceneManager
 {
@@ -57,9 +57,7 @@ class SceneManager
     WaterTerrainManager waterTerrainManager;
     EnemyManager enemyManager;
 
-    // Score font
+    // Text font
     irr::gui::IGUIFont* font;
-
-    irr::gui::IGUIFont* playerHP;
 };
 #endif // SCENEMANAGER_HPP

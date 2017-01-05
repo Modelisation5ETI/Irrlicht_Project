@@ -27,7 +27,6 @@ class EnemyManager : public CollisionNodeGroupManager<EnemyNodeType>
 
     // Animation
     irr::scene::EMD2_ANIMATION_TYPE animationType;
-
 };
 
 #endif // ENEMYMANAGER_HPP
