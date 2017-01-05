@@ -90,12 +90,17 @@ void ShootableNodeGroupManager<NodeType>::DammageParticles( irr::IrrlichtDevice*
 {
     //Get information from device
     irr::video::IVideoDriver* driver = device->getVideoDriver();
-
     //Compute particles position
     irr::scene::ISceneNode* node = NodeGroupManager<NodeType>::nodes[i];
     irr::core::vector3df position( node->getPosition() +
       irr::core::vector3df( 0, (node->getBoundingBox().getExtent().Y)/2.0f, 0 ) );
-    irr::scene::IParticleEmitter* em = nodesPS[i]->createBoxEmitter(
+
+    irr::core::string<irr::c8> nodeName = node->getName();
+
+    irr::scene::IParticleEmitter* em;
+    if(nodeName == irr::core::string<irr::c8>("Tree") || nodeName == irr::core::string<irr::c8>("Box"))
+    {
+    em= nodesPS[i]->createBoxEmitter(
       irr::core::aabbox3d<irr::f32>(-3,0,-3,3,1,3), // emitter size
       irr::core::vector3df(0.0f,0.06f,0.0f),   // initial direction
       80,1000,                             // emit rate
@@ -104,8 +109,25 @@ void ShootableNodeGroupManager<NodeType>::DammageParticles( irr::IrrlichtDevice*
       600,1200,100-nodesHP[i], // min and max age, angle //heigh
       irr::core::dimension2df(10.f,10.f),         // min size
       irr::core::dimension2df(20.f,20.f));        // max size
+    }
+    else
+    {
+     em = nodesPS[i]->createSphereEmitter(
+       irr::core::vector3df(0, 0, 0), //center
+       10, //radius
+       irr::core::vector3df(0.0f, 0.2f, 0.0f), //direction??
+       80, // minimum particles per second
+       1000, // maximum particles per second
+       irr::video::SColor(255, 255, 255, 255), //minStartColor
+       irr::video::SColor(255, 255, 255, 255), //maxStartColor
+       100, //lifeTimeMin in milliseconds
+       200, //lifeTimeMax in milliseconds
+       0, //maxAngleDegrees
+       irr::core::dimension2df(10.0f, 10.0f), //minStartSize
+       irr::core::dimension2df(20.0f, 20.0f) //maxStartSize
+      );
+    }
 
-     irr::core::string<irr::c8> nodeName = node->getName();
     if(nodeName == irr::core::string<irr::c8>("Tree"))
     {
       em->setMaxLifeTime(1000+(100-nodesHP[i])*15);
@@ -113,6 +135,10 @@ void ShootableNodeGroupManager<NodeType>::DammageParticles( irr::IrrlichtDevice*
     else if(nodeName == irr::core::string<irr::c8>("Box"))
     {
       em->setMaxLifeTime(800+(100-nodesHP[i]));
+    }
+    else if(nodeName == irr::core::string<irr::c8>("Enemy"))
+    {
+
     }
 
     irr::scene::IParticleAffector* paf = nodesPS[i]->createFadeOutParticleAffector();

@@ -16,7 +16,7 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
   waterTerrainManager.AddNodeToScene(device, WATER, irr::core::vector3df(4000,-6,4000) );
 
   //Add character
-  playerManager.AddNodeToScene( device, PLAYER, irr::core::vector3df(  5768, 700, 4844 ) );
+  playerManager.AddNodeToScene( device, PLAYER, irr::core::vector3df( 1000,700,1000)); // 5768, 700, 4844 ) );
 
   //Add camera
   cameraManager.add3rdPersonCameraToScene( sceneManager, CAMERA );
@@ -130,7 +130,7 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     enemyManager.SetupCollision( device, enemyCollisionNodes,
       irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0));
     enemyManager.SetupInterCollision( device,
-      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
+      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0));
 
     //Delete bullets
     for(unsigned int i = 0; i < bulletManager.nodes.size(); i++)
@@ -153,6 +153,11 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
   bulletManager.Update();
   enemyManager.Update( device, &playerManager );
 
+  //Player dies if touches water
+  if(playerManager.GetNode()->getPosition().Y < 0)
+  {
+      playerManager.TakeDamage(device,100);
+  }
 }
 
 //*****************************************************************************
