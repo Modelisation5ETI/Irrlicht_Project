@@ -14,6 +14,7 @@
 #include "TreeManager.hpp"
 #include "BulletManager.hpp"
 #include "WaterTerrainManager.hpp"
+#include "EnemyManager.hpp"
 
 #include "CTreeSceneNode.h"
 
@@ -22,17 +23,16 @@
 // Number of  objects
 const unsigned int NB_BOXES = 15;
 const unsigned int NB_TREES = 15;
+const unsigned int NB_ENEMIES = 1;
 // Node IDs
-enum NodeID { PLAYER, TERRAIN, WATER, CAMERA, BOX, TREE = BOX + NB_BOXES, BULLET = TREE + NB_TREES };
+enum NodeID { PLAYER, TERRAIN, CAMERA, WATER, BOX, TREE = BOX + NB_BOXES, ENEMY = TREE + NB_TREES, BULLET = ENEMY + NB_ENEMIES };
 
 
 class SceneManager
 {
   public:
     //! Constructor
-    SceneManager( irr::video::IVideoDriver* iVideoDriver,
-      irr::scene::ISceneManager* iSceneManager ) :
-      videoDriver(iVideoDriver), sceneManager(iSceneManager)
+    SceneManager()
     {}
 
   // Load scene
@@ -43,7 +43,7 @@ class SceneManager
                     EventReceiver* eventReceiver );
 
   // Draw All
-  void drawAll();
+  void drawAll( irr::IrrlichtDevice* device );
 
 
   private:
@@ -55,12 +55,7 @@ class SceneManager
     TreeManager treeManager;
     BulletManager bulletManager;
     WaterTerrainManager waterTerrainManager;
-
-    // Irrlicht Video Driver
-    irr::video::IVideoDriver* videoDriver;
-
-    // Irrlicht SceneManager
-    irr::scene::ISceneManager* sceneManager;
+    EnemyManager enemyManager;
 
     // Score font
     irr::gui::IGUIFont* font;

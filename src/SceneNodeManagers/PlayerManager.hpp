@@ -37,7 +37,13 @@ public:
   // Request Shooting
   bool requestShoot = false;
 
+  //Game Over
+  bool GameOver = false;
+
 private:
+  //Override Die()
+  virtual void Die( irr::IrrlichtDevice* device );
+
   //Update 3rd person position and orientation
   void updateTransform( EventReceiver* eventReceiver );
 

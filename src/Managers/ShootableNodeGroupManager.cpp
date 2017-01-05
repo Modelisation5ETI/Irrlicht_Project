@@ -19,11 +19,8 @@ void ShootableNodeGroupManager<NodeType>::TakeDamage( irr::IrrlichtDevice* devic
       //Check for node life
       if( nodesHP[i] <= 0 )
         {
-        //Set Flag to update collision setup in SceneManager
-        requestUpdate = true;
-        //Die
-        Die( device, i );
-        nodesHP.erase( nodesHP.begin() + i );
+          //Die
+          Die( device, i );
         }
       }
 
@@ -79,6 +76,12 @@ void ShootableNodeGroupManager<NodeType>::Die( irr::IrrlichtDevice* device, unsi
   NodeGroupManager<NodeType>::nodes[i]->removeAnimators();
   NodeGroupManager<NodeType>::nodes.erase( NodeGroupManager<NodeType>::nodes.begin() + i );
 
+  //Set Flag to update collision setup in SceneManager
+  requestUpdate = true;
+
+  nodesHP.erase( nodesHP.begin() + i );
+
+
   return;
 }
 
@@ -131,8 +134,8 @@ void ShootableNodeGroupManager<NodeType>::DammageParticles( irr::IrrlichtDevice*
   return;
 }
 
-
 template class ShootableNodeGroupManager<irr::scene::IMeshSceneNode>;
+template class ShootableNodeGroupManager<irr::scene::IAnimatedMeshSceneNode>;
 template class ShootableNodeGroupManager<irr::scene::IBillboardSceneNode>;
 template class ShootableNodeGroupManager<irr::scene::ISceneNode>;
 template class ShootableNodeGroupManager<irr::scene::CTreeSceneNode>;

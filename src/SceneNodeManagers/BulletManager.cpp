@@ -70,7 +70,7 @@ void BulletManager::Shoot( irr::IrrlichtDevice* device,
 
   irr::scene::ISceneNodeAnimatorCollisionResponse* animator = sceneManager->createCollisionResponseAnimator(
     metaTriangleSelector, bullet,
-    irr::core::vector3df( 1, 1, 1 ),       //Ellipsoid Radius
+    irr::core::vector3df( 3, 3, 3 ),       //Ellipsoid Radius
     irr::core::vector3df( 0, 0, 0 ),       //Gravity per second
     irr::core::vector3df( 0, 0, 0 ) );     //Ellipsoid Translation (Offset)
   animator->setCollisionCallback( this );
@@ -94,12 +94,6 @@ bool BulletManager::onCollision(const irr::scene::ISceneNodeAnimatorCollisionRes
   // Collision with a box
   if( nodeName == irr::core::string<irr::c8>("Box") )
     {
-    std::cout<<"Bullet collision with "<<collisionNode->getID()<<std::endl;
-    }
-
-  // Collision with a box
-  if( nodeName == irr::core::string<irr::c8>("Box") )
-    {
     std::cout<<"COLLISION BULLET - BOX"<<std::endl;
     boxManager->TakeDamage( device, collisionNode->getID(), 20 );
     }
@@ -109,6 +103,13 @@ bool BulletManager::onCollision(const irr::scene::ISceneNodeAnimatorCollisionRes
     {
     std::cout<<"COLLISION BULLET - TREE"<<std::endl;
     treeManager->TakeDamage( device, collisionNode->getID(), 20 );
+    }
+
+  // Collision with an enemy
+  if( nodeName == irr::core::string<irr::c8>("Enemy") )
+    {
+    std::cout<<"COLLISION BULLET - ENEMY"<<std::endl;
+    enemyManager->TakeDamage( device, collisionNode->getID(), 20 );
     }
 
   // Delete bullet

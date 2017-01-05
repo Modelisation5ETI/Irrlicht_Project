@@ -27,7 +27,7 @@ int main(void)
   irr::video::SColor color( 255, 255, 255, 255);
 
   // Scene Manager
-  SceneManager sceneManager( driver, device->getSceneManager() );
+  SceneManager sceneManager;
   sceneManager.LoadScene( device );
 
   int lastFPS = -1;// FPS
@@ -46,7 +46,7 @@ int main(void)
 
     // Draw scene
     driver->beginScene( true, true, color );
-    sceneManager.drawAll();
+    sceneManager.drawAll(device);
     driver->endScene ();
 
     // FPS
