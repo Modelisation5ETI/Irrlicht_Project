@@ -25,7 +25,7 @@ public:
   bool onCollision( const irr::scene::ISceneNodeAnimatorCollisionResponse& animator );
 
   // Update Character
-  void Update( EventReceiver* eventReceiver );
+  void Update( EventReceiver* eventReceiver, irr::IrrlichtDevice* device );
 
   //Return Rotation value around Y axis
   float Get_Y_Rotation();
@@ -45,7 +45,7 @@ private:
   virtual void Die( irr::IrrlichtDevice* device );
 
   //Update 3rd person position and orientation
-  void updateTransform( EventReceiver* eventReceiver );
+  void updateTransform( EventReceiver* eventReceiver, irr::IrrlichtDevice* device );
 
   //Update 3rd person animation
   void updateAnimation( EventReceiver* eventReceiver );

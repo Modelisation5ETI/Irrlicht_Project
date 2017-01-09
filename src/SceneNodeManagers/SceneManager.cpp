@@ -90,7 +90,7 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     playerManager.GetNode()->removeAnimators();
     std::vector<irr::scene::ISceneNode*> playerCollisionNodes( boxManager.nodes.begin(),boxManager.nodes.end());
     playerCollisionNodes.insert( playerCollisionNodes.end(), treeManager.nodes.begin(), treeManager.nodes.end());
-    playerManager.SetupCollision( device, terrainManager.GetNode(), irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0) );
+//    playerManager.SetupCollision( device, terrainManager.GetNode(), irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0) );
     playerManager.SetupCollision( device, playerCollisionNodes, irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0) );
 
     //Boxes Collision
@@ -149,7 +149,7 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     }
 
   //Update managers
-  playerManager.Update( eventReceiver );
+  playerManager.Update( eventReceiver, device );
   cameraManager.Update( device, eventReceiver, playerManager );
   bulletManager.Update();
   enemyManager.Update( device, &playerManager );

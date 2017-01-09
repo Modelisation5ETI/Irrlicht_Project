@@ -58,9 +58,9 @@ bool PlayerManager::onCollision( const irr::scene::ISceneNodeAnimatorCollisionRe
 //*****************************************************************************
 // Update
 //*****************************************************************************
-void PlayerManager::Update( EventReceiver* eventReceiver )
+void PlayerManager::Update( EventReceiver* eventReceiver, irr::IrrlichtDevice* device )
 {
-  updateTransform( eventReceiver );
+  updateTransform( eventReceiver, device );
   updateAnimation( eventReceiver );
 }
 
@@ -80,7 +80,7 @@ void PlayerManager::Die( irr::IrrlichtDevice* device )
 //*****************************************************************************
 // Update Transform
 //*****************************************************************************
-void PlayerManager::updateTransform( EventReceiver* eventReceiver )
+void PlayerManager::updateTransform( EventReceiver* eventReceiver, irr::IrrlichtDevice* device )
 {
   //Mesh Speed
   float speed = 0.0f;
@@ -122,15 +122,16 @@ void PlayerManager::updateTransform( EventReceiver* eventReceiver )
 
   irr::core::vector3df newPos = forward.normalize() * speed + NodeManager::node->getPosition();
 
-//  // Apply gravity manually
-//  newPos.Y -= 5;
+  // Apply gravity manually
+  newPos.Y -= 5;
 
-//  // Handle collision with terrain manually
-//  float terrainHeight = terrainNode->getHeight(newPos.X,newPos.Z);
-//  if( newPos.Y < terrainHeight + 24.44)
-//    {
-//    newPos.Y=terrainHeight + 24.44 ;
-//    }
+  // Handle collision with terrain manually
+  irr::scene::ITerrainSceneNode* terrainNode = (irr::scene::ITerrainSceneNode*)device->getSceneManager()->getSceneNodeFromName("Terrain");
+  float terrainHeight = terrainNode->getHeight(newPos.X,newPos.Z);
+  if( newPos.Y < terrainHeight + 24.44)
+    {
+    newPos.Y=terrainHeight + 24.44 ;
+    }
 
   //Update Mesh
   NodeManager::node->setPosition( newPos );
