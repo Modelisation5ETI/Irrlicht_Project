@@ -13,7 +13,7 @@ void WaterTerrainManager::AddNodeToScene( irr::IrrlichtDevice* device,
 
   irr::scene::IAnimatedMesh* mesh = sceneManager->addHillPlaneMesh( "myHill", //name
      irr::core::dimension2d<irr::f32>(30,30), //tile size
-     irr::core::dimension2d<irr::u32>(30,30), 0, 0, // tile count, material, hillheight
+     irr::core::dimension2d<irr::u32>(30,30), 0, 0.1, // tile count, material, hillheight
      irr::core::dimension2d<irr::f32>(0,0), // count hills
      irr::core::dimension2d<irr::f32>(10,10)); // texture repeat
 
