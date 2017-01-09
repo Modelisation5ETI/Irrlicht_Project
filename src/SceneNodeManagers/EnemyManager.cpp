@@ -56,7 +56,7 @@ void EnemyManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
     node->setMD2Animation( irr::scene::EMAT_STAND );
 
     //Set Triangle Selector
-    node->setTriangleSelector( sceneManager->createTriangleSelector( node ) );
+    node->setTriangleSelector( sceneManager->createTriangleSelectorFromBoundingBox( node ) );
 
     //Save Data
     NodeGroupManager::nodes.push_back( node );
