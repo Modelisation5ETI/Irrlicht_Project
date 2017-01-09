@@ -70,25 +70,6 @@ void SceneManager::LoadScene( irr::IrrlichtDevice* device )
 //*****************************************************************************
 void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* eventReceiver )
 {
-    //Handle GameOver
-    if( playerManager.GameOver )
-      {
-      //Stop updating unless restart is requested
-      while( !eventReceiver->IsKeyDown( irr::KEY_KEY_R ) )
-        return;
-      //Reload scene
-      device->getSceneManager()->clear();
-      playerManager = PlayerManager();//TODO: Implement Destructors for managers
-      terrainManager = TerrainManager();
-      cameraManager = CameraManager();
-      waterTerrainManager = WaterTerrainManager();
-      boxManager = BoxManager();
-      bulletManager = BulletManager();
-      enemyManager = EnemyManager();
-      treeManager = TreeManager();
-      LoadScene( device );
-      return;
-  }
   //Handle creation of bullets when shooting
   if( playerManager.requestShoot )
     {
@@ -129,8 +110,8 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     enemyCollisionNodes.push_back( terrainManager.GetNode() );
     enemyManager.SetupCollision( device, enemyCollisionNodes,
       irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,-10,0));
-    enemyManager.SetupInterCollision( device,
-      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0));
+//    enemyManager.SetupInterCollision( device,
+//      irr::core::vector3df(25,24.44,25), irr::core::vector3df(0,0,0));
 
     //Delete bullets
     for(unsigned int i = 0; i < bulletManager.nodes.size(); i++)
@@ -145,6 +126,26 @@ void SceneManager::UpdateScene( irr::IrrlichtDevice* device, EventReceiver* even
     boxManager.requestUpdate = false;
     treeManager.requestUpdate = false;
     enemyManager.requestUpdate = false;
+    }
+
+  //Handle GameOver
+  if( playerManager.GameOver )
+    {
+    //Stop updating unless restart is requested
+    while( !eventReceiver->IsKeyDown( irr::KEY_KEY_R ) )
+      return;
+    //Reload scene
+    device->getSceneManager()->clear();
+    playerManager = PlayerManager();//TODO: Implement Destructors for managers
+    terrainManager = TerrainManager();
+    cameraManager = CameraManager();
+    waterTerrainManager = WaterTerrainManager();
+    boxManager = BoxManager();
+    bulletManager = BulletManager();
+    enemyManager = EnemyManager();
+    treeManager = TreeManager();
+    LoadScene( device );
+    return;
     }
 
   //Update managers

@@ -22,8 +22,8 @@
 #include <vector>
 
 // Number of  objects
-const unsigned int NB_BOXES = 15;
-const unsigned int NB_TREES = 15;
+const unsigned int NB_BOXES = 10;
+const unsigned int NB_TREES = 20;
 const unsigned int NB_ENEMIES = 1;
 // Node IDs
 enum NodeID { PLAYER, TERRAIN, CAMERA, WATER, BOX, TREE = BOX + NB_BOXES, ENEMY = TREE + NB_TREES, BULLET = ENEMY + NB_ENEMIES };

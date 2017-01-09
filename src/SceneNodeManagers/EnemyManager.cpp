@@ -19,7 +19,6 @@ void EnemyManager::AddNodeGroupToScene( irr::IrrlichtDevice* device, irr::s32 id
     float x =rand()%int(terrain->getBoundingBox().getExtent().X - 100) + 100;
     float z =rand()%int(terrain->getBoundingBox().getExtent().Z - 100) + 100;
     float y = terrain->getHeight( x, z ) + 100;
-
     //Add Box
     EnemyManager::AddNodeToScene( device, id + i, irr::core::vector3df( x, y, z ) );
     }
@@ -55,8 +54,6 @@ void EnemyManager::AddNodeToScene( irr::IrrlichtDevice* device, irr::s32 id,
 
     //MD2 Animation
     node->setMD2Animation( irr::scene::EMAT_STAND );
-
-    node->setPosition(  irr::core::vector3df( 1500, 570, 1000 ) );
 
     //Set Triangle Selector
     node->setTriangleSelector( sceneManager->createTriangleSelector( node ) );
